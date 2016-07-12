@@ -3,12 +3,13 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Sistema Solar en Prolog</title>
+	<link href='http://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/defecto.css" />
 	<link rel="stylesheet" type="text/css" href="css/hint.min.css">
 </head>
 <body class="defecto">
-	<div class="container" style="margin-top: 100px;">
+	<div class="container" style="margin-top: 50px;">
 		<section class="menu">
 			<button class="btn btn-pimpiado" type="button" id="setelites_dialog">Sat&eacute;lites de un planeta</button>
 			<button class="btn btn-pimpiado" type="button" id="grupos_planetas_dialog">Grupo de planetas</button>
@@ -52,9 +53,16 @@
 		<div class="container" style="margin-top: 50px;">
 			{% for planeta of listado_planetas %}
 			<div style="width:{{ width }}%; float: left; text-align: center;" class="hint--bottom" aria-label="Nombre: {{ planeta.nombre }} - Diametro: {{ planeta.diametro }}" >
-				<img src="images/{{ planeta.nombre }}.png" alt="{{ planeta.nombre }}" style="width: {{ planeta.width }}%;" />
+				<img src="images/{{ planeta.nombre }}.png" alt="{{ planeta.nombre }}" style="width: {{ planeta.width }}px;" />
 			</div>
 			{% endfor %}
+		</div>
+	</script>
+
+	<script type="text/monkberry" id="vista_movimiento_planeta">
+		<div class="solar-syst">
+			<div class="sun"></div>
+			<div class="{{ planeta }} planet" style="animation: orb {{ tiempo_traslacion }}s linear infinite;"></div>
 		</div>
 	</script>
 	<!--VISTAS-->

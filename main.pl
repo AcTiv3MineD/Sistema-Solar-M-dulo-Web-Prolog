@@ -71,6 +71,7 @@ tiempo_rotacion( jupiter, 9 ).
 tiempo_rotacion( saturno, 10 ).
 tiempo_rotacion( urano, 17 ).
 tiempo_rotacion( neptuno, 16 ).
+tiempo_rotacion( pluton, 153 ).
 tiempo_rotacion( luna, 672).
 tiempo_rotacion( io, 48 ).
 tiempo_rotacion( europa, 85 ).
@@ -91,14 +92,15 @@ tiempo_rotacion( oberon, 312 ).
 tiempo_rotacion( triton,203).
 tiempo_rotacion( caronte,144).
 
-tiempo_traslacion( mercurio, 2112 ).
-tiempo_traslacion( venus, 5800 ).
+tiempo_traslacion( mercurio, 87 ).
+tiempo_traslacion( venus, 224 ).
 tiempo_traslacion( tierra, 365 ).
 tiempo_traslacion( marte, 686 ).
 tiempo_traslacion( jupiter, 4328 ).
 tiempo_traslacion( saturno, 10752 ).
 tiempo_traslacion( urano, 30663 ).
 tiempo_traslacion( neptuno, 60148 ).
+tiempo_traslacion( pluton, 90777 ).
 tiempo_traslacion( luna, 3476 ).
 tiempo_traslacion( io, 3643 ).
 tiempo_traslacion( europa, 3122 ).
@@ -151,7 +153,7 @@ diametro_planetas_worker( [ Planeta | Faltantes ], R ) :- diametro( Planeta, Dia
 diametro_planetas( Lista, Resultado ) :- diametro_planetas_worker( Lista, Aux ), reverse( Aux, Resultado ).
 
 %%CC
-
+informacion_movimiento_planeta( Planeta, Resultado ) :- tiempo_rotacion( Planeta, Rotacion ), tiempo_traslacion( Planeta, Traslacion ), append( [ ], [ Rotacion, Traslacion ], Resultado ).
 
 %%SERVIDOR WEB:
 %%LIBRERIAS
@@ -206,8 +208,11 @@ diametro_planetas_action( _Request ) :-
 :- http_handler( '/orbita_planeta', orbita_planeta_action, [] ).
 
 orbita_planeta_action( _Request ) :-
-		format( 'Content-type: application/json~n~n' ),
-		format( 'En construccion' ).
+		member( method( post ), _Request ), !,
+		http_read_data( _Request, [ planeta = Planeta ], [ ] ),
+		informacion_movimiento_planeta( Planeta, Resultado ),
+		cors_enable,
+		reply_json_dict( Resultado ).
 
 
 %%%%%%%%%%%%%%%%%% HACKS %%%%%%%%%%%%%%%%%%%%%%%%%%
