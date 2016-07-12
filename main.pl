@@ -12,25 +12,25 @@ planeta(pluton).
 
 estrella(sun).
 
-luna(luna).
-luna(io).
-luna(europa).
-luna(ganimedes).
-luna(calisto).
-luna(titan).
-luna(tetis).
-luna(dione).
-luna(rea).
-luna(japeto).
-luna(mimas).
-luna(encelado).
-luna(miranda).
-luna(ariel).
-luna(umbriel).
-luna(titania).
-luna(oberon).
-luna(triton).
-luna(caronte).
+satelite( luna).
+satelite( io).
+satelite( europa).
+satelite( ganimedes).
+satelite( calisto).
+satelite( titan).
+satelite( tetis).
+satelite( dione).
+satelite( rea).
+satelite( japeto).
+satelite( mimas).
+satelite( encelado).
+satelite( miranda).
+satelite( ariel).
+satelite( umbriel).
+satelite( titania).
+satelite( oberon).
+satelite( triton).
+satelite( caronte).
 
 %%Propiedades
 diametro( mercurio, 4878 ).
@@ -141,7 +141,8 @@ orbita( caronte, pluton ).
 
 %%REGLAS%%
 %%A
-lunas_de_planeta( X, Y ) :- planeta( X ), orbita( Y, X ), luna( Y ).
+lunas_de_planeta( Planeta, Luna ) :- planeta( Planeta ), orbita( Luna, Planeta ), satelite( Luna ).
+lista_lunas_de_planeta( Planeta, Resultado ) :- findall( Intermedio, lunas_de_planeta( Planeta, Intermedio ), Resultado ).
 
 %%B
 diametro_planetas( [ ], [ ] ).
@@ -154,31 +155,39 @@ diametro_planetas( [ Planeta | Faltantes ], R ) :- diametro( Planeta, Diametro )
 %%LIBRERIAS
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
-%% NECESARIO PARA EL HTTP_READ_DATA
-:- use_module(library(http/http_client)).
+:- use_module(library(http/http_client)). %% NECESARIO PARA EL HTTP_READ_DATA
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_error)).
 :- use_module(library(http/html_write)).
+:- use_module(library(http/http_json)). %%Manejo JSON
+:- use_module(library(http/http_cors)). %%Manejo Cross-Origin Resource Sharing
+:- use_module(library(settings)).
+:- use_module(library(http/http_header)).
 
 %%CONFIGURACION INICIAL
 server(Port) :-
-		http_server(http_dispatch, [port(Port)]).
+		http_server( http_dispatch, [ port( Port ) ] ).
+
+:- set_setting( http:cors, [*] ). %%ALLELUYA!!!!
 
 %%%%%%%%%%%%%%%%% RUTAS %%%%%%%%%%%%%%%%%%%%%%%%%
 %%RUTA PRINCIPAL
 :- http_handler( '/', say_hi, []).
 
-say_hi(_Request) :-
+say_hi( _Request ) :-
 		format('Content-type: text/plain~n~n'),
+		cors_enable,
 		format('Hello World!~n').
 
 %%OBTENER LUNAS PLANETA
 :- http_handler( '/lunas_planeta', lunas_de_planeta_action, [] ).
 
-lunas_de_planeta_action(_Request) :-
-		format( 'Content-type: application/json~n~n' ),
-		format( 'En construccion' ).
-
+lunas_de_planeta_action( _Request ) :-
+		member( method( post ), _Request ), !,
+		http_read_data( _Request, [ planeta = Planeta ], [ ] ),
+		lista_lunas_de_planeta( Planeta, Lunas ),
+		cors_enable,
+        reply_json_dict( Lunas ).
 
 %%LISTAR PLANETAS POR MASA
 :- http_handler( '/diametro_planetas', diametro_planetas_action, [] ).
@@ -190,15 +199,6 @@ diametro_planetas_action( _Request ) :-
 %%ORBITA PLANETA
 :- http_handler( '/orbita_planeta', orbita_planeta_action, [] ).
 
-orbita_planeta_action( Request ) :-
-		member(method( post ), Request), !,
-		http_read_data(Request, Data, []),
-		format('Content-type: text/html~n~n', []),
-		format('<p>', []),
-		portray_clause(Data),
-		format('</p><p>========~n', []),
-		portray_clause(Request),
-		format('</p>').
-
-		%%format( 'Content-type: application/json~n~n' ),
-		%%format( 'En construccion' ).
+orbita_planeta_action( _Request ) :-
+		format( 'Content-type: application/json~n~n' ),
+		format( 'En construccion' ).

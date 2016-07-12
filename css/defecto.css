@@ -1,0 +1,24 @@
+/*
+	REALIZADO POR:
+	CESAR MENDEZ - ISC - 20130262
+*/
+
+.defecto {
+	background-color: #131313;
+	/*AA0000, 4477ea*/
+}
+
+.btn-pimpiado {
+	background-color: rgba( 200, 200, 200, 0.1 );
+	/*background-color: rgba( 15, 15, 15, 0.3 );*/
+	color: #FFF;
+	border: 1px solid #FFF;
+	border-radius: 3px;
+	transition: all 200ms ease-in;
+}
+
+.btn-pimpiado:hover {
+	background-color: rgba( 15, 15, 15, 0.5 );
+	color: #FFF;
+	border-radius: 5px;
+}

@@ -1,9 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8" />
 	<title>Sistema Solar en Prolog</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/defecto.css" />
+	<link rel="stylesheet" type="text/css" href="css/select2.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/select2-bootstrap.css" />
 </head>
-<body>
-	<!-- FORMULARIOS -->
+<body class="defecto">
+	<div class="container" style="margin-top: 100px;">
+		<section class="menu">
+			<button class="btn btn-pimpiado" type="button" id="setelites_dialog">Sat&eacute;lites de un planeta</button>
+			<button class="btn btn-pimpiado" type="button" id="grupos_planetas_diaglos">Grupo de planetas</button>
+			<button class="btn btn-pimpiado" type="button" id="periodo_planeta_dialog">Per&iacute;odo planeta</button>
+		</section>
+	</div>
+
+	<div id="contenido_sistema"></div>
+
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/bootbox.min.js"></script>
+	<script type="text/javascript" src="js/monkberry.min.js"></script>
+	<script type="text/javascript" src="js/select2.min.js"></script>
+
+	<!--VISTAS-->
+	<script type="text/monkberry" id="vista_formulario_planeta">
+		<form id="formularioPlaneta" method="post">
+			<div class="form-group">
+				<label>Nombre del planeta</label>
+				<select class="form-control" id="nombre_planeta">
+					{% for id, nombre of planetas %}
+					<option value="{{ id }}">{{ nombre }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</form>
+	</script>
+
+	<script type="text/monkberry" id="vista_lunas_planeta">
+		<div class="container" style="margin-top: 50px;">
+			<ul class="list-group">
+				{% for luna of lunas %}
+				<li class="list-group-item">{{ luna }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</script>
+	<!--VISTAS-->
+
+	<script type="text/javascript" src="js/general.js"></script>
 </body>
 </html>
