@@ -149,6 +149,7 @@ diametro_planetas( [ Planeta | Faltantes ], R ) :- diametro( Planeta, Diametro )
 
 %%CC
 
+
 %%SERVIDOR WEB:
 %%LIBRERIAS
 :- use_module(library(http/thread_httpd)).
@@ -156,13 +157,37 @@ diametro_planetas( [ Planeta | Faltantes ], R ) :- diametro( Planeta, Diametro )
 
 %%CONFIGURACION INICIAL
 server(Port) :-
-        http_server(http_dispatch, [port(Port)]).
+		http_server(http_dispatch, [port(Port)]).
 
 server(Port) :-
-        http_server(http_dispatch, [port(Port)]).
+		http_server(http_dispatch, [port(Port)]).
 
-:- http_handler( /, say_hi, []).
+%%%%%%%%%%%%%%%%% RUTAS %%%%%%%%%%%%%%%%%%%%%%%%%
+%%RUTA PRINCIPAL
+:- http_handler( '/', say_hi, []).
 
 say_hi(_Request) :-
-        format('Content-type: text/plain~n~n'),
-        format('Hello World!~n').
+		format('Content-type: text/plain~n~n'),
+		format('Hello World!~n').
+
+%%OBTENER LUNAS PLANETA
+:- http_handler( '/lunas_planeta', lunas_de_planeta_action, [] ).
+
+lunas_de_planeta_action(_Request) :-
+		format( 'Content-type: text/json~n~n' ),
+		format( 'En construccion' ).
+
+
+%%LISTAR PLANETAS POR MASA
+:- http_handler( '/diametro_planetas', diametro_planetas_action, [] ).
+
+diametro_planetas_action( _Request ) :-
+		format( 'Content-type: text/json~n~n' ),
+		format( 'En construccion' ).
+
+%%ORBITA PLANETA
+:- http_handler( '/orbita_planeta', orbita_planeta_action, [] ).
+
+orbita_planeta_action( _Request ) :-
+		format( 'Content-type: text/json~n~n' ),
+		format( 'En construccion' ).
