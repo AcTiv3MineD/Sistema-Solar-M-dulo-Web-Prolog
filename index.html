@@ -64,6 +64,10 @@
 			<div class="sun"></div>
 			<div class="{{ planeta }} planet" style="animation: orb {{ tiempo_traslacion }}s linear infinite;"></div>
 		</div>
+
+		<div class="rotacion_planeta hint--bottom" aria-label="Traslación: {{ traslacion_dias_terrestes }} días - Rotación: {{ rotacion_horas_terrestes }} Horas." >
+			<img src="images/{{ planeta }}.png" alt="{{ planeta.nombre }}" style="width: 100%; animation: orb {{ tiempo_rotacion }}s linear infinite;" />
+		</div>
 	</script>
 	<!--VISTAS-->
 

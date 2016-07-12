@@ -111,6 +111,8 @@ $( document ).ready( function( ) {
 	$( "#periodo_planeta_dialog" ).click( function( ) {
 		$( "#contenido_sistema" ).html( '' );
 		var tiempo_traslacion = 15;
+		var tiempo_rotacion = 5;
+
 		bootbox.dialog( {
 			message: '<div class="row" id="planet_form_container"></div>',
 			title: 'Formulario planeta',
@@ -133,7 +135,10 @@ $( document ).ready( function( ) {
 							var tiempo_movimiento = Monkberry.render( vista_movimiento_planeta, document.getElementById( 'contenido_sistema' ) );
 							tiempo_movimiento.update( {
 								'planeta': nombre_planeta,
-								'tiempo_traslacion' : data[ 1 ]*tiempo_traslacion/360
+								'tiempo_traslacion' : data[ 1 ]*tiempo_traslacion/360,
+								'tiempo_rotacion'   : data[ 0 ]*tiempo_rotacion/24,
+								'traslacion_dias_terrestes' : data[ 1 ], 
+								'rotacion_horas_terrestes' : data[ 0 ] 
 							} );
 						} );
 					}

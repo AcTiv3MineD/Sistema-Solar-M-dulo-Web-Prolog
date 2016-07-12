@@ -249,3 +249,10 @@
             transform: rotate(-360deg);
   }
 }
+
+div.rotacion_planeta {
+	position: absolute;
+	right: 20px;
+	top: 50px;
+	width: 250px;
+}
