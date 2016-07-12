@@ -11,9 +11,10 @@ var planetas = {
 };
 
 $( document ).ready( function( ) {
-	var lunas = null;
 
 	$( "#setelites_dialog" ).click( function( ) {
+		$( "#contenido_sistema" ).html( '' );
+
 		bootbox.dialog( {
 			message: '<div class="row" id="planet_form_container"></div>',
 			title: 'Formulario planeta',
@@ -31,7 +32,7 @@ $( document ).ready( function( ) {
 								'planeta' : $( "#nombre_planeta" ).val( )
 							}
 						} ).done( function( data, textStatus, jqXHR ) {
-							if( lunas == null ) lunas = Monkberry.render( vista_lunas_planeta, document.getElementById( 'contenido_sistema' ) );
+							var lunas = Monkberry.render( vista_lunas_planeta, document.getElementById( 'contenido_sistema' ) );
 							lunas.update( {
 								'lunas': data
 							} );
@@ -45,6 +46,65 @@ $( document ).ready( function( ) {
 		formulario.update( {
 			'planetas' : planetas
 		} );
+
+	} );
+
+	$( "#grupos_planetas_dialog" ).click( function( ) {
+		$( "#contenido_sistema" ).html( '' );
+
+		bootbox.dialog( {
+			message: '<div class="row" id="planet_form_container"></div>',
+			title: 'Formulario planeta',
+			buttons: {
+				success: {
+					label: "procesar",
+					className: "btn-success",
+					contentType: 'application/json',
+					withCredentials: false,
+					callback: function() {
+						var planeta_seleccionado = $( "#nombre_planeta" ).val( );
+						var planetas_select = $.map( $( "#nombre_planeta option:selected" ), function ( el, i ) {
+							return $( el ).val( );
+						} );
+
+						$.ajax( {
+							type: "post",
+							url: 'http://localhost:8002/diametro_planetas',
+							data: {
+								'planetas' : planetas_select.join(',')
+							}
+						} ).done( function( data, textStatus, jqXHR ) {
+							var listado_planetas = { };
+							var diametro_mayor = 1;
+							
+							for ( var i = data.length - 1; i >= 0; i-- ) {
+								if( data[ i ] > diametro_mayor ) diametro_mayor = data[ i ];
+							}
+
+							for ( var i = data.length - 1; i >= 0; i-- ) {
+								listado_planetas[ i + '' ] = {
+									'nombre'  : planeta_seleccionado[ i ],
+									'diametro' : data[ i ],
+									'width' : ( data[ i ] / diametro_mayor )*100
+								};
+							}
+
+							var grupo_planetas = Monkberry.render( vista_grupo_planetas, document.getElementById( 'contenido_sistema' ) );
+							grupo_planetas.update( {
+								'listado_planetas': listado_planetas,
+								'width'      : 100/data.length
+							} );
+						} );
+					}
+				}
+			}
+		} );
+
+		var formulario = Monkberry.render( vista_formulario_planeta, document.getElementById( 'planet_form_container' ) );
+		formulario.update( {
+			'planetas' : planetas
+		} );
+
+		$( "#nombre_planeta" ).attr( 'multiple', '' );
 	} );
 } );
-

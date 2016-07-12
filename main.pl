@@ -41,6 +41,7 @@ diametro( jupiter, 142984 ).
 diametro( saturno, 120536 ).
 diametro( urano, 51108 ).
 diametro( neptuno, 49538 ).
+diametro( pluton, 2370 ).
 diametro( luna, 3476 ).
 diametro( io, 3643 ).
 diametro( europa, 3122 ).
@@ -145,8 +146,9 @@ lunas_de_planeta( Planeta, Luna ) :- planeta( Planeta ), orbita( Luna, Planeta )
 lista_lunas_de_planeta( Planeta, Resultado ) :- findall( Intermedio, lunas_de_planeta( Planeta, Intermedio ), Resultado ).
 
 %%B
-diametro_planetas( [ ], [ ] ).
-diametro_planetas( [ Planeta | Faltantes ], R ) :- diametro( Planeta, Diametro ), diametro_planetas( Faltantes, Temp ), append( Temp, [ Diametro ], Z ), reverse( Z, R ).
+diametro_planetas_worker( [ ], [ ] ).
+diametro_planetas_worker( [ Planeta | Faltantes ], R ) :- diametro( Planeta, Diametro ), diametro_planetas_worker( Faltantes, Temp ), append( Temp, [ Diametro ], R ).
+diametro_planetas( Lista, Resultado ) :- diametro_planetas_worker( Lista, Aux ), reverse( Aux, Resultado ).
 
 %%CC
 
@@ -187,14 +189,18 @@ lunas_de_planeta_action( _Request ) :-
 		http_read_data( _Request, [ planeta = Planeta ], [ ] ),
 		lista_lunas_de_planeta( Planeta, Lunas ),
 		cors_enable,
-        reply_json_dict( Lunas ).
+		reply_json_dict( Lunas ).
 
 %%LISTAR PLANETAS POR MASA
 :- http_handler( '/diametro_planetas', diametro_planetas_action, [] ).
 
 diametro_planetas_action( _Request ) :-
-		format( 'Content-type: application/json~n~n' ),
-		format( 'En construccion' ).
+		member( method( post ), _Request ), !,
+		http_read_data( _Request, [ planetas = Planetas ], [ ] ),
+		atoms_list( Planetas, Lista_planetas ),
+		diametro_planetas( Lista_planetas, Diametros ),
+		cors_enable,
+		reply_json_dict( Diametros ).
 
 %%ORBITA PLANETA
 :- http_handler( '/orbita_planeta', orbita_planeta_action, [] ).
@@ -202,3 +208,9 @@ diametro_planetas_action( _Request ) :-
 orbita_planeta_action( _Request ) :-
 		format( 'Content-type: application/json~n~n' ),
 		format( 'En construccion' ).
+
+
+%%%%%%%%%%%%%%%%%% HACKS %%%%%%%%%%%%%%%%%%%%%%%%%%
+atoms_list(Atom, List):-
+	atomic_list_concat(['[', Atom, ']'], NAtom), 
+	term_to_atom(List, NAtom).

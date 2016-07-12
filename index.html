@@ -5,25 +5,24 @@
 	<title>Sistema Solar en Prolog</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/defecto.css" />
-	<link rel="stylesheet" type="text/css" href="css/select2.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/select2-bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="css/hint.min.css">
 </head>
 <body class="defecto">
 	<div class="container" style="margin-top: 100px;">
 		<section class="menu">
 			<button class="btn btn-pimpiado" type="button" id="setelites_dialog">Sat&eacute;lites de un planeta</button>
-			<button class="btn btn-pimpiado" type="button" id="grupos_planetas_diaglos">Grupo de planetas</button>
+			<button class="btn btn-pimpiado" type="button" id="grupos_planetas_dialog">Grupo de planetas</button>
 			<button class="btn btn-pimpiado" type="button" id="periodo_planeta_dialog">Per&iacute;odo planeta</button>
 		</section>
 	</div>
 
 	<div id="contenido_sistema"></div>
 
+	<script type="text/javascript" src="js/ejs.js"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/bootbox.min.js"></script>
 	<script type="text/javascript" src="js/monkberry.min.js"></script>
-	<script type="text/javascript" src="js/select2.min.js"></script>
 
 	<!--VISTAS-->
 	<script type="text/monkberry" id="vista_formulario_planeta">
@@ -46,6 +45,16 @@
 				<li class="list-group-item">{{ luna }}</li>
 				{% endfor %}
 			</ul>
+		</div>
+	</script>
+
+	<script type="text/monkberry" id="vista_grupo_planetas">
+		<div class="container" style="margin-top: 50px;">
+			{% for planeta of listado_planetas %}
+			<div style="width:{{ width }}%; float: left; text-align: center;" class="hint--bottom" aria-label="Nombre: {{ planeta.nombre }} - Diametro: {{ planeta.diametro }}" >
+				<img src="images/{{ planeta.nombre }}.png" alt="{{ planeta.nombre }}" style="width: {{ planeta.width }}%;" />
+			</div>
+			{% endfor %}
 		</div>
 	</script>
 	<!--VISTAS-->
