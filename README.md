@@ -1,1 +1,33 @@
-Implementación de un pequeño sistema solar implementando un servidor web basado en Prolog y HTML5, CSS3 y jQuery en el FrontEnd.
+# Introduction
+
+Para inicializar el servidor, simplemente llamar la regla server( 8002 ).
+
+Si desea modificar el puerto a otro diferente al 8082, debe de modificarlo en el js/general.js en las 3 llamadas al servidor.
+
+Luego de inicializado el servidor, la url es [**http://localhost:8002/**](http://localhost:8002/).
+
+Por restricciones de cors ( Cross-Origin Resource Sharing ), el index.html se debe de ejecutar desde una direccion distinta al *file system*, los dominios se especifican desde el set_setting( http:cors ), por defecto se permite la llamada desde cualquier origen, pero si se desea un dominio en especifico, simplemente remplazar el [*], por una lista de dominios en específico.
+
+# Rutas de llamadas
+
+##/lunas_planeta
+Parámetros:
+-> planeta [ Nombre del planeta a consultar ]
+
+##/diametro_planetas
+Parámetros:
+-> planetas [ lista planetas separados por coma ]
+
+##/orbita_planeta
+Parámetros:
+-> planeta [ Nombre del planeta a consultar ]
+
+The [github issue tracker](https://github.com/petkaantonov/bluebird/issues) is **_only_** for bug reports and feature requests. Anything else, such as questions for help in using the library, should be posted in [StackOverflow](http://stackoverflow.com/questions/tagged/bluebird) under tags `promise` and `bluebird`.
+
+
+
+## Librerías utilizadas
+
+[**MonkBerry**](http://monkberry.js.org/), con esta se manipula la interfaz web.
+[**BootBox**](http://bootboxjs.com/), con esta se manipula facilmente los dialogs.
+[**BootsTrap**](http://getbootstrap.com/), con esta.

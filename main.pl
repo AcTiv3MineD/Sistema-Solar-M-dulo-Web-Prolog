@@ -176,7 +176,7 @@ server(Port) :-
 
 %%%%%%%%%%%%%%%%% RUTAS %%%%%%%%%%%%%%%%%%%%%%%%%
 %%RUTA PRINCIPAL
-:- http_handler( '/', say_hi, []).
+:- http_handler( '/', say_hi, [ ] ).
 
 say_hi( _Request ) :-
 		format('Content-type: text/plain~n~n'),
